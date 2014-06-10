@@ -1,0 +1,157 @@
+##################################################
+# vim: ft=zsh
+#
+# A simple theme that displays relevant, contextual information.
+#
+# Authors:
+#   Joseph Tannhuber <sepp.tannhuber@yahoo.com>
+##################################################
+
+# Color definitions.
+base03=234
+base02=235
+base01=240
+base00=241
+base0=244
+base1=245
+base2=254
+base3=230
+yellow=136
+orange=166
+red=160
+magenta=125
+violet=61
+blue=33
+cyan=37
+green=64
+black=0
+
+# Load dependencies.
+pmodload 'helper'
+
+function prompt_terencehill_user {
+unset _prompt_terencehill_user
+if [[ -n "$SSH_CLIENT" || $UID -eq 0 ]]; then
+    _prompt_terencehill_user="%(!.%{%F{$orange}%B%}.)%n"
+fi
+}
+
+function prompt_terencehill_pwd {
+local pwd="${PWD/#$HOME/~}"
+unset _prompt_terencehill_pwd
+if [[ -n "$SSH_CLIENT" || $UID -eq 0 ]]; then
+    _prompt_terencehill_pwd="@%M:"
+fi
+if [[ "$pwd" == (#m)[/~] ]]; then
+    _prompt_terencehill_pwd+="$MATCH"
+    unset MATCH
+else
+#    _prompt_terencehill_pwd+="${${${(@j:/:M)${(@s:/:)pwd}##.#?}:h}%/}/${pwd:t}"
+    _prompt_terencehill_pwd+="%~"
+fi
+}
+
+function prompt_terencehill_indicator {
+if [[ "${editor_info[vimode]}" =~ "red" ]]; then
+    print -n "%{\033]12;#dc322f\007${editor_info[vimode]}%}REPLACE"
+elif [[ "${editor_info[vimode]}" =~ "blue" ]]; then
+    print -n "%{\033]12;#268bd2\007${editor_info[vimode]}%}NORMAL"
+else
+    print -n "%{\033]12;#b58900\007${editor_info[vimode]}%}INSERT"
+fi
+}
+
+function prompt_terencehill_symbols {
+_prompt_terencehill_symbols="${VIM:+" %B%F{$green}V%f%b"}"
+_prompt_terencehill_symbols+="${jobstates:+" %F{$cyan}⚙%f"}"
+_prompt_terencehill_symbols+="%(?::%F{$red} ✘%f)"
+_prompt_terencehill_symbols+="%f%(!. %B%F{$orange}⚡%f%b.)"
+}
+
+function prompt_terencehill_precmd {
+setopt LOCAL_OPTIONS
+unsetopt XTRACE KSH_ARRAYS
+
+# Format Username.
+prompt_terencehill_user
+
+# Format PWD.
+prompt_terencehill_pwd
+
+# Format Symbols.
+prompt_terencehill_symbols
+
+# Get Git repository information.
+if (( $+functions[git-info] )); then
+    git-info
+fi
+
+# Calculate runtime of previous command
+cmdtime=$(( ($(date +%s) - $starttime)/60 ))
+if [[ $cmdtime -eq 0 ]]; then
+    runtime=""
+else
+    minutes=$(( $cmdtime%1440%60 ))"m"
+    if [[ $cmdtime -ge 60 ]]; then
+        hours=$(( $cmdtime%1440/60 ))"h"
+        if [[ $cmdtime -ge 1440 ]]; then
+            days=$(( $cmdtime/1440 ))"d"
+        fi
+    fi
+    runtime="%F{241}◁ $days$hours$minutes "
+fi
+
+# Removes the whitespace character at the end of the right prompt.
+ZLE_RPROMPT_INDENT=0
+}
+
+function prompt_terencehill_preexec {
+starttime=$(date +%s)
+}
+
+function prompt_terencehill_setup {
+setopt LOCAL_OPTIONS
+unsetopt XTRACE KSH_ARRAYS
+prompt_opts=(cr percent subst)
+
+# Load required functions.
+autoload -Uz add-zsh-hook
+
+# Add hook for calling git-info before each command.
+add-zsh-hook precmd prompt_terencehill_precmd
+add-zsh-hook preexec prompt_terencehill_preexec
+
+# Set editor-info parameters.
+zstyle ':prezto:module:editor:info:completing' format '%B%F{$red}...%f%b'
+zstyle ':prezto:module:editor:info:keymap:primary' format '%F{$yellow}'
+zstyle ':prezto:module:editor:info:keymap:primary:insert' format '%F{$yellow}'
+zstyle ':prezto:module:editor:info:keymap:primary:overwrite' format '%F{$red}'
+zstyle ':prezto:module:editor:info:keymap:alternate' format '%F{$blue}'
+
+# Set git-info parameters.
+zstyle ':prezto:module:git:info' verbose 'yes'
+zstyle ':prezto:module:git:info:action' format ':%%B%F{$base2}%s%f%%b'
+zstyle ':prezto:module:git:info:added' format ' %%B%F{$green}✚%f%%b'
+zstyle ':prezto:module:git:info:ahead' format ' %%B%F{$violet}⬆%f%%b'
+zstyle ':prezto:module:git:info:behind' format ' %%B%F{$violet}⬇%f%%b'
+zstyle ':prezto:module:git:info:branch' format '%F{$base00}  %b%s'
+zstyle ':prezto:module:git:info:commit' format '%F{$green}  %.7c%s'
+zstyle ':prezto:module:git:info:deleted' format ' %%B%F{$red}✖%f%%b'
+zstyle ':prezto:module:git:info:modified' format ' %%B%F{$blue}✱%f%%b'
+zstyle ':prezto:module:git:info:position' format '%F{$magenta}  %p%s'
+zstyle ':prezto:module:git:info:renamed' format ' %%B%F{$magenta}➜%f%%b'
+zstyle ':prezto:module:git:info:stashed' format ' %%B%F{$cyan}✭%f%%b'
+zstyle ':prezto:module:git:info:unmerged' format ' %%B%F{$violet}═%f%%b'
+zstyle ':prezto:module:git:info:untracked' format ' %%B%F{$base2}◼%f%%b'
+zstyle ':prezto:module:git:info:keys' format \
+    'prompt' '$(coalesce "%b" "%p" "%c") ▷%f' \
+    'rprompt' '%A%B%S%a%d%m%r%U%u'
+
+# Define prompts.
+PROMPT='$(prompt_terencehill_indicator) ▷${git_info:+${(e)git_info[prompt]}}${_prompt_terencehill_symbols} '
+RPROMPT='${git_info[rprompt]} ${runtime}${editor_info[vimode]}◁ ${_prompt_terencehill_user}%b${editor_info[vimode]}${_prompt_terencehill_pwd}'
+SPROMPT='zsh: correct %F{$red}%R%f to %F{$green}%r%f [nyae]? '
+}
+
+starttime=$(date +%s)
+prompt_terencehill_setup "$@"
