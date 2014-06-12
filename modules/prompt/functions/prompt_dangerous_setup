@@ -7,7 +7,7 @@
 #   Joseph Tannhuber <sepp.tannhuber@yahoo.com>
 ##################################################
 
-# Color definitions.
+# Load solarized color palette.
 base03=234
 base02=235
 base01=240
@@ -32,7 +32,7 @@ pmodload 'helper'
 function prompt_dangerous_user {
 unset _prompt_dangerous_user
 if [[ -n "$SSH_CLIENT" || $UID -eq 0 ]]; then
-    _prompt_dangerous_user="%(!.%{%F{$orange}%B%}.)%n"
+    _prompt_dangerous_user="%(!.%{%F{$orange}%B%}.)%n%b"
 fi
 }
 
@@ -123,9 +123,9 @@ add-zsh-hook preexec prompt_dangerous_preexec
 
 # Set editor-info parameters.
 zstyle ':prezto:module:editor:info:completing' format '%B%F{$red}...%f%b'
-zstyle ':prezto:module:editor:info:keymap:primary:insert' format '%B%F{$yellow}'
-zstyle ':prezto:module:editor:info:keymap:primary:overwrite' format '%B%F{$red}'
-zstyle ':prezto:module:editor:info:keymap:alternate' format '%B%F{$blue}'
+zstyle ':prezto:module:editor:info:keymap:primary:insert' format '%F{$yellow}'
+zstyle ':prezto:module:editor:info:keymap:primary:overwrite' format '%F{$red}'
+zstyle ':prezto:module:editor:info:keymap:alternate' format '%F{$blue}'
 
 # Set git-info parameters.
 zstyle ':prezto:module:git:info' verbose 'yes'
@@ -143,12 +143,12 @@ zstyle ':prezto:module:git:info:stashed' format ' %%B%F{$cyan}✭%f%%b'
 zstyle ':prezto:module:git:info:unmerged' format ' %%B%F{$violet}═%f%%b'
 zstyle ':prezto:module:git:info:untracked' format ' %%B%F{$base2}◼%f%%b'
 zstyle ':prezto:module:git:info:keys' format \
-    'prompt' '$(coalesce "%b" "%p" "%c") %B❯❯❯%%b' \
+    'prompt' '$(coalesce "%b" "%p" "%c") %%B❯❯❯%%b' \
     'rprompt' '%A%B%S%a%d%m%r%U%u'
 
 # Define prompts.
-PROMPT='${editor_info[vimode]}❯❯❯%b%f${git_info:+${(e)git_info[prompt]}}${_prompt_dangerous_symbols} '
-RPROMPT='${git_info[rprompt]} ${runtime}%B${editor_info[vimode]}❮❮❮%b ${_prompt_dangerous_user}%b${_prompt_dangerous_pwd} ${editor_info[vimode]}❮❮❮%{$(prompt_dangerous_indicator)%}'
+PROMPT='%B${editor_info[vimode]}❯❯❯%b${git_info:+${(e)git_info[prompt]}}${_prompt_dangerous_symbols} '
+RPROMPT='${git_info[rprompt]} ${runtime}%B${editor_info[vimode]}❮❮❮%b ${_prompt_dangerous_user}${editor_info[vimode]}${_prompt_dangerous_pwd} %B❮❮❮%{$(prompt_dangerous_indicator)%}'
 SPROMPT='zsh: correct %F{$red}%R%f to %F{$green}%r%f [nyae]? '
 }
 
