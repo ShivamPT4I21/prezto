@@ -7,7 +7,7 @@
 #   Joseph Tannhuber <sepp.tannhuber@yahoo.com>
 ##################################################
 
-# Color definitions.
+# Load solarized color palette.
 base03=234
 base02=235
 base01=240
