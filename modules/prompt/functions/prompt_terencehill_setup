@@ -123,7 +123,6 @@ add-zsh-hook preexec prompt_terencehill_preexec
 
 # Set editor-info parameters.
 zstyle ':prezto:module:editor:info:completing' format '%B%F{$red}...%f%b'
-zstyle ':prezto:module:editor:info:keymap:primary' format '%F{$yellow}'
 zstyle ':prezto:module:editor:info:keymap:primary:insert' format '%F{$yellow}'
 zstyle ':prezto:module:editor:info:keymap:primary:overwrite' format '%F{$red}'
 zstyle ':prezto:module:editor:info:keymap:alternate' format '%F{$blue}'
