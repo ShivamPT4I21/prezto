@@ -32,7 +32,7 @@ pmodload 'helper'
 function prompt_budspencer_user {
 unset _prompt_budspencer_user
 if [[ -n "$SSH_CLIENT" || $UID -eq 0 ]]; then
-    _prompt_budspencer_user="%(!.%{%K{$orange}%B%}.)%n"
+    _prompt_budspencer_user="%(!.%{%K{$orange}%B%}.)%n%b"
 fi
 }
 
@@ -40,7 +40,7 @@ function prompt_budspencer_pwd {
 local pwd="${PWD/#$HOME/~}"
 unset _prompt_budspencer_pwd
 if [[ -n "$SSH_CLIENT" || $UID -eq 0 ]]; then
-    _prompt_budspencer_pwd="@%M:"
+    _prompt_budspencer_pwd="%F{$black}@%M:"
 fi
 if [[ "$pwd" == (#m)[/~] ]]; then
     _prompt_budspencer_pwd+="$MATCH"
