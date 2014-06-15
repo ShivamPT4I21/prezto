@@ -64,7 +64,7 @@ fi
 function prompt_dangerous_symbols {
 _prompt_dangerous_symbols="${VIM:+" %B%F{$green}V%f%b"}"
 _prompt_dangerous_symbols+="${jobstates:+" %F{$cyan}⚙%f"}"
-_prompt_dangerous_symbols+="%(?::%F{$red} ✘%f)"
+_prompt_dangerous_symbols+="%(?::%F{$red} ↵%f)"
 _prompt_dangerous_symbols+="%f%(!. %B%F{$orange}⚡%f%b.)"
 }
 
@@ -131,8 +131,8 @@ zstyle ':prezto:module:editor:info:keymap:alternate' format '%F{$blue}'
 zstyle ':prezto:module:git:info' verbose 'yes'
 zstyle ':prezto:module:git:info:action' format ':%%B%F{$base2}%s%f%%b'
 zstyle ':prezto:module:git:info:added' format ' %%B%F{$green}✚%f%%b'
-zstyle ':prezto:module:git:info:ahead' format ' %%B%F{$violet}⬆%f%%b'
-zstyle ':prezto:module:git:info:behind' format ' %%B%F{$violet}⬇%f%%b'
+zstyle ':prezto:module:git:info:ahead' format ' %F{$violet}↑%f'
+zstyle ':prezto:module:git:info:behind' format ' %F{$violet}↓%f'
 zstyle ':prezto:module:git:info:branch' format '%F{$base00}  %b%s'
 zstyle ':prezto:module:git:info:commit' format '%F{$green}  %.7c%s'
 zstyle ':prezto:module:git:info:deleted' format ' %%B%F{$red}✖%f%%b'
