@@ -26,6 +26,14 @@ cyan=37
 green=64
 black=0
 
+# Cursor colors.
+unsupported_terminals=("fbterm" "st")
+if [[ ! "${unsupported_terminals[(r)$TERM]}" == "$TERM" ]]; then
+    rcursor="%{\033]12;#dc322f\007"
+    ncursor="%{\033]12;#268bd2\007"
+    icursor="%{\033]12;#b58900\007"
+fi
+
 # Load dependencies.
 pmodload 'helper'
 
@@ -36,6 +44,20 @@ if [[ -n "$SSH_CLIENT" || $UID -eq 0 ]]; then
 fi
 }
 
+function pwdtoggle {
+    if [[ "$pwd_format" == "truncated" ]]; then
+        pwd_format="complete"
+    else
+        pwd_format="truncated"
+    fi
+    prompt_budspencer_pwd
+    zle reset-prompt
+}
+zle -N pwdtoggle
+bindkey -M vicmd ' ' pwdtoggle
+bindkey -M viins '^ ' pwdtoggle
+bindkey -M emacs '^ ' pwdtoggle
+
 function prompt_budspencer_pwd {
 local pwd="${PWD/#$HOME/~}"
 unset _prompt_budspencer_pwd
@@ -45,25 +67,28 @@ fi
 if [[ "$pwd" == (#m)[/~] ]]; then
     _prompt_budspencer_pwd+="$MATCH"
     unset MATCH
-else
-#    _prompt_budspencer_pwd+="${${${(@j:/:M)${(@s:/:)pwd}##.#?}:h}%/}/${pwd:t}"
+elif [[ "${pwd_format}" == "complete" ]]; then
     _prompt_budspencer_pwd+="%~"
+else
+    _prompt_budspencer_pwd+="${${${(@j:/:M)${(@s:/:)pwd}##.#?}:h}%/}/${pwd:t}"
+#    trunc_pwd="${${${(@j:/:M)${(@s:/:)pwd}##.#?}:h}%/}/${pwd:t}"
+#    _prompt_budspencer_pwd+="${trunc_pwd//\%/%%}"
 fi
 }
 
 function prompt_budspencer_indicator {
 if [[ "$editor_info[vimode]" =~ "red" ]]; then
-    print -n "%{\033]12;#dc322f\007%K{$editor_info[vimode]}%} REPLACE "
+    print -n "$rcursor%K{$editor_info[vimode]}%} REPLACE "
 elif [[ "$editor_info[vimode]" =~ "blue" ]]; then
-    print -n "%{\033]12;#268bd2\007%K{$editor_info[vimode]}%} NORMAL "
+    print -n "$ncursor%K{$editor_info[vimode]}%} NORMAL "
 else
-    print -n "%{\033]12;#b58900\007%K{$editor_info[vimode]}%} INSERT "
+    print -n "$icursor%K{$editor_info[vimode]}%} INSERT "
 fi
 }
 
 function prompt_budspencer_symbols {
 _prompt_budspencer_symbols="${VIM:+" %B%F{$green}V%f%b"}"
-_prompt_budspencer_symbols+="${jobstates:+" %F{$cyan}⚙%f"}"
+_prompt_budspencer_symbols+="%1(j. %F{$cyan}⚙%f.)"
 _prompt_budspencer_symbols+="%(?::%F{$red} ↵%f)"
 _prompt_budspencer_symbols+="%f%(!. %B%F{$orange}⚡%f%b.)"
 }
@@ -138,7 +163,7 @@ zstyle ':prezto:module:git:info:commit' format '%F{$editor_info{vimode]}%K{$gree
 zstyle ':prezto:module:git:info:deleted' format ' %%B%F{$red}✖%f%%b'
 zstyle ':prezto:module:git:info:modified' format ' %%B%F{$blue}✱%f%%b'
 zstyle ':prezto:module:git:info:position' format '%F{$editor_info{vimode]}%K{$magenta}%F{$black}  %p %s%F{$magenta}'
-zstyle ':prezto:module:git:info:renamed' format ' %%B%F{$magenta}➜%f%%b'
+zstyle ':prezto:module:git:info:renamed' format ' %F{$magenta}→%f'
 zstyle ':prezto:module:git:info:stashed' format ' %%B%F{$cyan}✭%f%%b'
 zstyle ':prezto:module:git:info:unmerged' format ' %%B%F{$violet}═%f%%b'
 zstyle ':prezto:module:git:info:untracked' format ' %%B%F{$base2}◼%f%%b'
