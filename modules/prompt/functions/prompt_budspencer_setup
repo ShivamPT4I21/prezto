@@ -70,9 +70,7 @@ if [[ "$pwd" == (#m)[/~] ]]; then
 elif [[ "${pwd_format}" == "complete" ]]; then
     _prompt_budspencer_pwd+="%~"
 else
-    _prompt_budspencer_pwd+="${${${(@j:/:M)${(@s:/:)pwd}##.#?}:h}%/}/${pwd:t}"
-#    trunc_pwd="${${${(@j:/:M)${(@s:/:)pwd}##.#?}:h}%/}/${pwd:t}"
-#    _prompt_budspencer_pwd+="${trunc_pwd//\%/%%}"
+    _prompt_budspencer_pwd+="${${${${(@j:/:M)${(@s:/:)pwd}##.#?}:h}%/}//\%/%%}/${${pwd:t}//\%/%%}"
 fi
 }
 
@@ -89,7 +87,7 @@ fi
 function prompt_budspencer_symbols {
 _prompt_budspencer_symbols="${VIM:+" %B%F{$green}V%f%b"}"
 _prompt_budspencer_symbols+="%1(j. %F{$cyan}⚙%f.)"
-_prompt_budspencer_symbols+="%(?::%F{$red} ↵%f)"
+_prompt_budspencer_symbols+="%(?:: %B%F{$red}↵%b)"
 _prompt_budspencer_symbols+="%f%(!. %B%F{$orange}⚡%f%b.)"
 }
 
@@ -156,14 +154,14 @@ zstyle ':prezto:module:editor:info:keymap:alternate' format '$blue'
 zstyle ':prezto:module:git:info' verbose 'yes'
 zstyle ':prezto:module:git:info:action' format ':%%B%F{$base2}%s%f%%b'
 zstyle ':prezto:module:git:info:added' format ' %%B%F{$green}✚%f%%b'
-zstyle ':prezto:module:git:info:ahead' format ' %F{$violet}↑%f'
-zstyle ':prezto:module:git:info:behind' format ' %F{$violet}↓%f'
+zstyle ':prezto:module:git:info:ahead' format ' %%B%F{$violet}↑%f%%b'
+zstyle ':prezto:module:git:info:behind' format ' %%B%F{$violet}↓%f%%b'
 zstyle ':prezto:module:git:info:branch' format '%F{$editor_info{vimode]}%K{$base00}%F{$black}  %b %s%F{$base00}'
 zstyle ':prezto:module:git:info:commit' format '%F{$editor_info{vimode]}%K{$green}%F{$black}  %.7c %s%F{$green}'
 zstyle ':prezto:module:git:info:deleted' format ' %%B%F{$red}✖%f%%b'
 zstyle ':prezto:module:git:info:modified' format ' %%B%F{$blue}✱%f%%b'
 zstyle ':prezto:module:git:info:position' format '%F{$editor_info{vimode]}%K{$magenta}%F{$black}  %p %s%F{$magenta}'
-zstyle ':prezto:module:git:info:renamed' format ' %F{$magenta}→%f'
+zstyle ':prezto:module:git:info:renamed' format ' %%B%F{$magenta}→%f%%b'
 zstyle ':prezto:module:git:info:stashed' format ' %%B%F{$cyan}✭%f%%b'
 zstyle ':prezto:module:git:info:unmerged' format ' %%B%F{$violet}═%f%%b'
 zstyle ':prezto:module:git:info:untracked' format ' %%B%F{$base2}◼%f%%b'
