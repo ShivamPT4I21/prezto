@@ -85,7 +85,8 @@ fi
 }
 
 function prompt_budspencer_symbols {
-_prompt_budspencer_symbols="${VIM:+" %B%F{$green}V%f%b"}"
+_prompt_budspencer_symbols="${VIM:+" %B%F{$violet}V%f%b"}"
+_prompt_budspencer_symbols+="${RANGER:+" %B%F{$violet}R%f%b"}"
 _prompt_budspencer_symbols+="%1(j. %F{$cyan}⚙%f.)"
 _prompt_budspencer_symbols+="%(?:: %B%F{$red}↵%b)"
 _prompt_budspencer_symbols+="%f%(!. %B%F{$orange}⚡%f%b.)"
