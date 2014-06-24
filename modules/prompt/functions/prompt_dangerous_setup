@@ -85,7 +85,8 @@ fi
 }
 
 function prompt_dangerous_symbols {
-_prompt_dangerous_symbols="${VIM:+" %B%F{$green}V%f%b"}"
+_prompt_dangerous_symbols="${VIM:+" %B%F{$violet}V%f%b"}"
+_prompt_dangerous_symbols+="${RANGER:+" %B%F{$violet}R%f%b"}"
 _prompt_dangerous_symbols+="%1(j. %F{$cyan}⚙%f.)"
 _prompt_dangerous_symbols+="%(?:: %B%F{$red}↵%f%b)"
 _prompt_dangerous_symbols+="%f%(!. %B%F{$orange}⚡%f%b.)"
