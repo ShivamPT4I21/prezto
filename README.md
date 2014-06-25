@@ -1,9 +1,49 @@
 Prezto — Instantly Awesome Zsh
 ==============================
 
-Prezto is the configuration framework for [Zsh][1]; it enriches the command line
+[Prezto][2] is the configuration framework for [Zsh][1]; it enriches the command line
 interface environment with sane defaults, aliases, functions, auto completion,
 and prompt themes.
+
+This repository comes with three enhanced themes: *Budspencer*, *Terencehill* and
+*Dangerous*.
+
+Advanced features
+-----------------
+
+  * Clear indication of active mode (INSERT=yellow, NORMAL=blue, REPLACE=red)
+  * Additional indicators for:
+      - active background jobs
+      - RANGER_LEVEL environment variable
+      - runtime of last command
+      - superuser
+  * Advanced path display:
+      - none (don't show)
+      - truncated (show truncated path)
+      - complete (show complete path)
+  * Toggle path display by:
+
+        Ctrl+Space in INSERT/REPLACE mode
+        Space in NORMAL mode
+
+  * Configure path display, example toggles between *none* and *complete*:
+
+        export PWDFORMAT="none complete"
+
+Budspencer theme
+----------------
+
+![budspencer theme][3]
+
+Terencehill theme
+-----------------
+
+![terencehill theme][4]
+
+Dangerous theme
+---------------
+
+![dangerous theme][5]
 
 Installation
 ------------
@@ -33,53 +73,6 @@ version is 4.3.11.
 
   5. Open a new Zsh terminal window or tab.
 
-### Troubleshooting
-
-If you are not able to find certain commands after switching to *Prezto*,
-modify the `PATH` variable in *~/.zprofile* then open a new Zsh terminal
-window or tab.
-
-Updating
---------
-
-Pull the latest changes and update submodules.
-
-    git pull && git submodule update --init --recursive
-
-Usage
------
-
-Prezto has many features disabled by default. Read the source code and
-accompanying README files to learn of what is available.
-
-### Modules
-
-  1. Browse */modules* to see what is available.
-  2. Load the modules you need in *~/.zpreztorc* then open a new Zsh terminal
-     window or tab.
-
-### Themes
-
-  1. For a list of themes, type `prompt -l`.
-  2. To preview a theme, type `prompt -p name`.
-  3. Load the theme you like in *~/.zpreztorc* then open a new Zsh terminal
-     window or tab.
-
-     ![sorin theme][2]
-
-Customization
--------------
-
-The project is managed via [Git][3]. It is highly recommended that you fork this
-project; so, that you can commit your changes and push them to [GitHub][4] to
-not lose them. If you do not know how to use Git, follow this [tutorial][5] and
-bookmark this [reference][6].
-
-Resources
----------
-
-The [Zsh Reference Card][7] and the [zsh-lovers][8] man page are indispensable.
-
 License
 -------
 
@@ -107,11 +100,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 [1]: http://www.zsh.org
-[2]: http://i.imgur.com/nBEEZ.png "sorin theme"
-[3]: http://git-scm.com
-[4]: https://github.com
-[5]: http://gitimmersion.com
-[6]: http://gitref.org
-[7]: http://www.bash2zsh.com/zsh_refcard/refcard.pdf
-[8]: http://grml.org/zsh/zsh-lovers.html
-
+[2]: https://github.com/sorin-ionescu/prezto 
+[3]: https://raw.githubusercontent.com/tannhuber/oh-my-zsh-budspencer/master/screenshots/budspencer.png
+[4]: https://raw.githubusercontent.com/tannhuber/oh-my-zsh-budspencer/master/screenshots/terencehill.png
+[5]: https://raw.githubusercontent.com/tannhuber/oh-my-zsh-budspencer/master/screenshots/dangerous.png

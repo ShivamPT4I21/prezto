@@ -37,19 +37,20 @@ fi
 # Load dependencies.
 pmodload 'helper'
 
-function prompt_terencehill_user {
-unset _prompt_terencehill_user
+function prompt_dangerous_user {
+unset _prompt_dangerous_user
 if [[ -n "$SSH_CLIENT" || $UID -eq 0 ]]; then
-    _prompt_terencehill_user="◀ %(!.%{%F{$orange}%B%}.)%n"
-elif [[ "$pwd_format" != "none" ]]; then
-    _prompt_terencehill_user="◀ "
+    _prompt_dangerous_user="%B❮❮❮%b %(!.%{%F{$orange}%B%}.)%n%b"
+elif
+    [[ "$pwd_format" != "none" ]]; then
+    _prompt_dangerous_user="%B❮❮❮%b "
 fi
 }
 
 function pwdtoggle {
 pwd_format=$PWDFORMAT[$(( $PWDFORMAT[(i)$pwd_format]%${#PWDFORMAT}+1 ))]
-prompt_terencehill_user
-prompt_terencehill_pwd
+prompt_dangerous_user
+prompt_dangerous_pwd
 zle reset-prompt
 }
 zle -N pwdtoggle
@@ -57,59 +58,59 @@ bindkey -M vicmd ' ' pwdtoggle
 bindkey -M viins '^ ' pwdtoggle
 bindkey -M emacs '^ ' pwdtoggle
 
-function prompt_terencehill_pwd {
+function prompt_dangerous_pwd {
 local pwd="${PWD/#$HOME/~}"
-unset _prompt_terencehill_pwd
+unset _prompt_dangerous_pwd
 if [[ -n "$SSH_CLIENT" || $UID -eq 0 ]]; then
-    _prompt_terencehill_pwd="@%M"
+    _prompt_dangerous_pwd="@%M"
     if [[ "$pwd_format" != "none" ]]; then
-        _prompt_terencehill_pwd+=":"
+        _prompt_dangerous_pwd+=":"
     else
-        _prompt_terencehill_pwd+=" "
+        _prompt_dangerous_pwd+=" "
     fi
 fi
 if [[ "$pwd_format" == "complete" ]]; then
-    _prompt_terencehill_pwd+="%~ "
+    _prompt_dangerous_pwd+="%~ "
 elif [[ "$pwd_format" == "truncated" ]]; then
     if [[ "$pwd" == (#m)[/~] ]]; then
-        _prompt_terencehill_pwd+="$MATCH "
+        _prompt_dangerous_pwd+="$MATCH "
         unset MATCH
     else
-        _prompt_terencehill_pwd+="${${${${(@j:/:M)${(@s:/:)pwd}##.#?}:h}%/}//\%/%%}/${${pwd:t}//\%/%%} "
+        _prompt_dangerous_pwd+="${${${${(@j:/:M)${(@s:/:)pwd}##.#?}:h}%/}//\%/%%}/${${pwd:t}//\%/%%} "
     fi
 fi
 }
 
-function prompt_terencehill_indicator {
-if [[ "${editor_info[vimode]}" =~ "red" ]]; then
-    print -n "$rcursor${editor_info[vimode]}%}"
-elif [[ "${editor_info[vimode]}" =~ "blue" ]]; then
-    print -n "$ncursor${editor_info[vimode]}%}"
+function prompt_dangerous_indicator {
+if [[ "$editor_info[vimode]" =~ "red" ]]; then
+    print -n "$rcursor"
+elif [[ "$editor_info[vimode]" =~ "blue" ]]; then
+    print -n "$ncursor"
 else
-    print -n "$icursor${editor_info[vimode]}%}"
+    print -n "$icursor"
 fi
 }
 
-function prompt_terencehill_symbols {
-_prompt_terencehill_symbols="${VIM:+" %B%F{$violet}V%f%b"}"
-_prompt_terencehill_symbols="${RANGER_LEVEL:+" %B%F{$violet}R%f%b"}"
-_prompt_terencehill_symbols+="%1(j. %F{$cyan}⚙%f.)"
-_prompt_terencehill_symbols+="%(?:: %B%F{$red}↵%f%b)"
-_prompt_terencehill_symbols+="%f%(!. %B%F{$orange}⚡%f%b.)"
+function prompt_dangerous_symbols {
+_prompt_dangerous_symbols="${VIM:+" %B%F{$violet}V%f%b"}"
+_prompt_dangerous_symbols+="${RANGER_LEVEL:+" %B%F{$violet}R%f%b"}"
+_prompt_dangerous_symbols+="%1(j. %F{$cyan}⚙%f.)"
+_prompt_dangerous_symbols+="%(?:: %B%F{$red}↵%f%b)"
+_prompt_dangerous_symbols+="%f%(!. %B%F{$orange}⚡%f%b.)"
 }
 
-function prompt_terencehill_precmd {
+function prompt_dangerous_precmd {
 setopt LOCAL_OPTIONS
 unsetopt XTRACE KSH_ARRAYS
 
 # Format Username.
-prompt_terencehill_user
+prompt_dangerous_user
 
 # Format PWD.
-prompt_terencehill_pwd
+prompt_dangerous_pwd
 
 # Format Symbols.
-prompt_terencehill_symbols
+prompt_dangerous_symbols
 
 # Get Git repository information.
 if (( $+functions[git-info] )); then
@@ -128,18 +129,18 @@ else
             days=$(( $cmdtime/1440 ))"d"
         fi
     fi
-    runtime="%F{$base00}◀ $days$hours$minutes "
+    runtime="%B%F{$base00}❮❮❮%b $days$hours$minutes "
 fi
 
 # Removes the whitespace character at the end of the right prompt.
 ZLE_RPROMPT_INDENT=0
 }
 
-function prompt_terencehill_preexec {
+function prompt_dangerous_preexec {
 starttime=$(date +%s)
 }
 
-function prompt_terencehill_setup {
+function prompt_dangerous_setup {
 setopt LOCAL_OPTIONS
 unsetopt XTRACE KSH_ARRAYS
 prompt_opts=(cr percent subst)
@@ -148,8 +149,8 @@ prompt_opts=(cr percent subst)
 autoload -Uz add-zsh-hook
 
 # Add hook for calling git-info before each command.
-add-zsh-hook precmd prompt_terencehill_precmd
-add-zsh-hook preexec prompt_terencehill_preexec
+add-zsh-hook precmd prompt_dangerous_precmd
+add-zsh-hook preexec prompt_dangerous_preexec
 
 # Set editor-info parameters.
 zstyle ':prezto:module:editor:info:completing' format '%B%F{$red}...%f%b'
@@ -173,12 +174,12 @@ zstyle ':prezto:module:git:info:stashed' format ' %%B%F{$cyan}✭%f%%b'
 zstyle ':prezto:module:git:info:unmerged' format ' %%B%F{$violet}═%f%%b'
 zstyle ':prezto:module:git:info:untracked' format ' %%B%F{$base2}◼%f%%b'
 zstyle ':prezto:module:git:info:keys' format \
-    'prompt' '$(coalesce "%b" "%p" "%c") ▶%f' \
+    'prompt' '$(coalesce "%b" "%p" "%c") %%B❯❯❯%%b' \
     'rprompt' '%A%B%S%a%d%m%r%U%u'
 
 # Define prompts.
-PROMPT='$(prompt_terencehill_indicator)▶${git_info:+${(e)git_info[prompt]}}${_prompt_terencehill_symbols} '
-RPROMPT='${git_info[rprompt]} ${runtime}${editor_info[vimode]}${_prompt_terencehill_user}%b${editor_info[vimode]}${_prompt_terencehill_pwd}◀'
+PROMPT='%B${editor_info[vimode]}❯❯❯%b${git_info:+${(e)git_info[prompt]}}${_prompt_dangerous_symbols} '
+RPROMPT='${git_info[rprompt]} ${runtime}${editor_info[vimode]}${_prompt_dangerous_user}${editor_info[vimode]}${_prompt_dangerous_pwd}%B❮❮❮%{$(prompt_dangerous_indicator)%}'
 SPROMPT='zsh: correct %F{$red}%R%f to %F{$green}%r%f [nyae]? '
 }
 
@@ -189,4 +190,4 @@ else
     PWDFORMAT=($=PWDFORMAT)
 fi
 pwd_format=$PWDFORMAT[1]
-prompt_terencehill_setup "$@"
+prompt_dangerous_setup "$@"

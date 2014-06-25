@@ -40,10 +40,9 @@ pmodload 'helper'
 function prompt_dangerous_user {
 unset _prompt_dangerous_user
 if [[ -n "$SSH_CLIENT" || $UID -eq 0 ]]; then
-    _prompt_dangerous_user="%B❮❮❮%b %(!.%{%F{$orange}%B%}.)%n%b"
-elif
-    [[ "$pwd_format" != "none" ]]; then
-    _prompt_dangerous_user="%B❮❮❮%b "
+    _prompt_dangerous_user="❮❮❮ %(!.%{%F{$orange}%B%}.)%n"
+elif [[ "$pwd_format" != "none" ]]; then
+    _prompt_dangerous_user="❮❮❮ "
 fi
 }
 
@@ -60,7 +59,6 @@ bindkey -M emacs '^ ' pwdtoggle
 
 function prompt_dangerous_pwd {
 local pwd="${PWD/#$HOME/~}"
-unset _prompt_dangerous_pwd_sep
 unset _prompt_dangerous_pwd
 if [[ -n "$SSH_CLIENT" || $UID -eq 0 ]]; then
     _prompt_dangerous_pwd="@%M"
@@ -83,18 +81,18 @@ fi
 }
 
 function prompt_dangerous_indicator {
-if [[ "$editor_info[vimode]" =~ "red" ]]; then
-    print -n "$rcursor"
-elif [[ "$editor_info[vimode]" =~ "blue" ]]; then
-    print -n "$ncursor"
+if [[ "${editor_info[vimode]}" =~ "red" ]]; then
+    print -n "$rcursor${editor_info[vimode]}%}"
+elif [[ "${editor_info[vimode]}" =~ "blue" ]]; then
+    print -n "$ncursor${editor_info[vimode]}%}"
 else
-    print -n "$icursor"
+    print -n "$icursor${editor_info[vimode]}%}"
 fi
 }
 
 function prompt_dangerous_symbols {
 _prompt_dangerous_symbols="${VIM:+" %B%F{$violet}V%f%b"}"
-_prompt_dangerous_symbols+="${RANGER_LEVEL:+" %B%F{$violet}R%f%b"}"
+_prompt_dangerous_symbols="${RANGER_LEVEL:+" %B%F{$violet}R%f%b"}"
 _prompt_dangerous_symbols+="%1(j. %F{$cyan}⚙%f.)"
 _prompt_dangerous_symbols+="%(?:: %B%F{$red}↵%f%b)"
 _prompt_dangerous_symbols+="%f%(!. %B%F{$orange}⚡%f%b.)"
@@ -130,7 +128,7 @@ else
             days=$(( $cmdtime/1440 ))"d"
         fi
     fi
-    runtime="%B%F{241}❮❮❮%b $days$hours$minutes "
+    runtime="%F{$base00}%B❮❮❮%b $days$hours$minutes "
 fi
 
 # Removes the whitespace character at the end of the right prompt.
@@ -175,12 +173,12 @@ zstyle ':prezto:module:git:info:stashed' format ' %%B%F{$cyan}✭%f%%b'
 zstyle ':prezto:module:git:info:unmerged' format ' %%B%F{$violet}═%f%%b'
 zstyle ':prezto:module:git:info:untracked' format ' %%B%F{$base2}◼%f%%b'
 zstyle ':prezto:module:git:info:keys' format \
-    'prompt' '$(coalesce "%b" "%p" "%c") %%B❯❯❯%%b' \
+    'prompt' '$(coalesce "%b" "%p" "%c") ❯❯❯%f' \
     'rprompt' '%A%B%S%a%d%m%r%U%u'
 
 # Define prompts.
-PROMPT='%B${editor_info[vimode]}❯❯❯%b${git_info:+${(e)git_info[prompt]}}${_prompt_dangerous_symbols} '
-RPROMPT='${git_info[rprompt]} ${runtime}${editor_info[vimode]}${_prompt_dangerous_user}${editor_info[vimode]}${_prompt_dangerous_pwd}%B❮❮❮%{$(prompt_dangerous_indicator)%}'
+PROMPT='$(prompt_dangerous_indicator)❯❯❯${git_info:+${(e)git_info[prompt]}}${_prompt_dangerous_symbols} '
+RPROMPT='${git_info[rprompt]} ${runtime}${editor_info[vimode]}${_prompt_dangerous_user}%b${editor_info[vimode]}${_prompt_dangerous_pwd}❮❮❮'
 SPROMPT='zsh: correct %F{$red}%R%f to %F{$green}%r%f [nyae]? '
 }
 
