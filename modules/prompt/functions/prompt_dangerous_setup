@@ -40,18 +40,18 @@ pmodload 'helper'
 function prompt_dangerous_user {
 unset _prompt_dangerous_user
 if [[ -n "$SSH_CLIENT" || $UID -eq 0 ]]; then
-    _prompt_dangerous_user="%(!.%{%F{$orange}%B%}.)%n%b"
+    _prompt_dangerous_user="%B❮❮❮%b %(!.%{%F{$orange}%B%}.)%n%b"
+elif
+    [[ "$pwd_format" != "none" ]]; then
+    _prompt_dangerous_user="%B❮❮❮%b "
 fi
 }
 
 function pwdtoggle {
-    if [[ "$pwd_format" == "truncated" ]]; then
-        pwd_format="complete"
-    else
-        pwd_format="truncated"
-    fi
-    prompt_dangerous_pwd
-    zle reset-prompt
+pwd_format=$PWDFORMAT[$(( $PWDFORMAT[(i)$pwd_format]%${#PWDFORMAT}+1 ))]
+prompt_dangerous_user
+prompt_dangerous_pwd
+zle reset-prompt
 }
 zle -N pwdtoggle
 bindkey -M vicmd ' ' pwdtoggle
@@ -60,17 +60,25 @@ bindkey -M emacs '^ ' pwdtoggle
 
 function prompt_dangerous_pwd {
 local pwd="${PWD/#$HOME/~}"
+unset _prompt_dangerous_pwd_sep
 unset _prompt_dangerous_pwd
 if [[ -n "$SSH_CLIENT" || $UID -eq 0 ]]; then
-    _prompt_dangerous_pwd="@%M:"
+    _prompt_dangerous_pwd="@%M"
+    if [[ "$pwd_format" != "none" ]]; then
+        _prompt_dangerous_pwd+=":"
+    else
+        _prompt_dangerous_pwd+=" "
+    fi
 fi
-if [[ "$pwd" == (#m)[/~] ]]; then
-    _prompt_dangerous_pwd+="$MATCH"
-    unset MATCH
-elif [[ "$pwd_format" == "complete" ]]; then
-    _prompt_dangerous_pwd+="%~"
-else
-    _prompt_dangerous_pwd+="${${${${(@j:/:M)${(@s:/:)pwd}##.#?}:h}%/}//\%/%%}/${${pwd:t}//\%/%%}"
+if [[ "$pwd_format" == "complete" ]]; then
+    _prompt_dangerous_pwd+="%~ "
+elif [[ "$pwd_format" == "truncated" ]]; then
+    if [[ "$pwd" == (#m)[/~] ]]; then
+        _prompt_dangerous_pwd+="$MATCH "
+        unset MATCH
+    else
+        _prompt_dangerous_pwd+="${${${${(@j:/:M)${(@s:/:)pwd}##.#?}:h}%/}//\%/%%}/${${pwd:t}//\%/%%} "
+    fi
 fi
 }
 
@@ -86,7 +94,7 @@ fi
 
 function prompt_dangerous_symbols {
 _prompt_dangerous_symbols="${VIM:+" %B%F{$violet}V%f%b"}"
-_prompt_dangerous_symbols+="${RANGER:+" %B%F{$violet}R%f%b"}"
+_prompt_dangerous_symbols+="${RANGER_LEVEL:+" %B%F{$violet}R%f%b"}"
 _prompt_dangerous_symbols+="%1(j. %F{$cyan}⚙%f.)"
 _prompt_dangerous_symbols+="%(?:: %B%F{$red}↵%f%b)"
 _prompt_dangerous_symbols+="%f%(!. %B%F{$orange}⚡%f%b.)"
@@ -172,9 +180,15 @@ zstyle ':prezto:module:git:info:keys' format \
 
 # Define prompts.
 PROMPT='%B${editor_info[vimode]}❯❯❯%b${git_info:+${(e)git_info[prompt]}}${_prompt_dangerous_symbols} '
-RPROMPT='${git_info[rprompt]} ${runtime}%B${editor_info[vimode]}❮❮❮%b ${_prompt_dangerous_user}${editor_info[vimode]}${_prompt_dangerous_pwd} %B❮❮❮%{$(prompt_dangerous_indicator)%}'
+RPROMPT='${git_info[rprompt]} ${runtime}${editor_info[vimode]}${_prompt_dangerous_user}${editor_info[vimode]}${_prompt_dangerous_pwd}%B❮❮❮%{$(prompt_dangerous_indicator)%}'
 SPROMPT='zsh: correct %F{$red}%R%f to %F{$green}%r%f [nyae]? '
 }
 
 starttime=$(date +%s)
+if [[ -z $PWDFORMAT ]]; then
+    PWDFORMAT=("truncated" "complete" "none")
+else
+    PWDFORMAT=($=PWDFORMAT)
+fi
+pwd_format=$PWDFORMAT[1]
 prompt_dangerous_setup "$@"
