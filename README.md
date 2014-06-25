@@ -101,6 +101,6 @@ SOFTWARE.
 
 [1]: http://www.zsh.org
 [2]: https://github.com/sorin-ionescu/prezto 
-[3]: https://raw.githubusercontent.com/tannhuber/oh-my-zsh-budspencer/master/screenshots/budspencer.png
-[4]: https://raw.githubusercontent.com/tannhuber/oh-my-zsh-budspencer/master/screenshots/terencehill.png
-[5]: https://raw.githubusercontent.com/tannhuber/oh-my-zsh-budspencer/master/screenshots/dangerous.png
+[3]: https://raw.githubusercontent.com/tannhuber/prezto/master/screenshots/budspencer.png
+[4]: https://raw.githubusercontent.com/tannhuber/prezto/master/screenshots/terencehill.png
+[5]: https://raw.githubusercontent.com/tannhuber/prezto/master/screenshots/dangerous.png
