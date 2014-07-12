@@ -17,9 +17,9 @@ fi
 # Editors
 #
 
-export EDITOR='nano'
-export VISUAL='nano'
-export PAGER='less'
+export EDITOR='vim'
+export VISUAL='vim'
+export PAGER='vimpager'
 
 #
 # Language
@@ -32,6 +32,8 @@ fi
 #
 # Paths
 #
+
+export PATH="$HOME/bin:$PATH"
 
 # Ensure path arrays do not contain duplicates.
 typeset -gU cdpath fpath mailpath path
