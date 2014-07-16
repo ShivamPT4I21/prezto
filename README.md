@@ -17,6 +17,7 @@ Advanced features
       - RANGER_LEVEL environment variable
       - runtime of last command
       - superuser
+      - no write permissions in present working directory
   * Advanced path display:
       - none (don't show)
       - truncated (show truncated path)

@@ -61,7 +61,12 @@ fi
 }
 
 function prompt_budspencer_symbols {
-_prompt_budspencer_symbols="${VIM:+" %B%F{${_prompt_budspencer_colors[7]}}V%f%b"}"
+if [[ -w . ]]; then
+    _prompt_budspencer_symbols=""
+else
+    _prompt_budspencer_symbols=" %B%F{${_prompt_budspencer_colors[4]}}%f%b"
+fi
+_prompt_budspencer_symbols+="${VIM:+" %B%F{${_prompt_budspencer_colors[7]}}V%f%b"}"
 _prompt_budspencer_symbols+="${RANGER_LEVEL:+" %B%F{${_prompt_budspencer_colors[7]}}R%f%b"}"
 _prompt_budspencer_symbols+="%1(j. %F{${_prompt_budspencer_colors[9]}}⚙%f.)"
 _prompt_budspencer_symbols+="%(?:: %B%F{${_prompt_budspencer_colors[5]}}↵%b)"

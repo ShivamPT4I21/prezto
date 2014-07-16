@@ -64,8 +64,13 @@ fi
 }
 
 function prompt_terencehill_symbols {
-_prompt_terencehill_symbols="${VIM:+" %B${_prompt_terencehill_colors[7]}V%f%b"}"
-_prompt_terencehill_symbols="${RANGER_LEVEL:+" %B${_prompt_terencehill_colors[7]}R%f%b"}"
+if [[ -w . ]]; then
+    _prompt_terencehill_symbols=""
+else
+    _prompt_terencehill_symbols=" %B${_prompt_terencehill_colors[4]}%f%b"
+fi
+_prompt_terencehill_symbols+="${VIM:+" %B${_prompt_terencehill_colors[7]}V%f%b"}"
+_prompt_terencehill_symbols+="${RANGER_LEVEL:+" %B${_prompt_terencehill_colors[7]}R%f%b"}"
 _prompt_terencehill_symbols+="%1(j. ${_prompt_terencehill_colors[9]}⚙%f.)"
 _prompt_terencehill_symbols+="%(?:: %B${_prompt_terencehill_colors[5]}↵%f%b)"
 _prompt_terencehill_symbols+="%f%(!. %B${_prompt_terencehill_colors[4]}⚡%f%b.)"

@@ -121,18 +121,24 @@ zstyle ':prezto:module:prompt' theme 'budspencer'
 
 # Set syntax highlighters.
 # By default, only the main highlighter is enabled.
-# zstyle ':prezto:module:syntax-highlighting' highlighters \
-#   'main' \
-#   'brackets' \
-#   'pattern' \
+ zstyle ':prezto:module:syntax-highlighting' highlighters \
+   'main' \
+   'brackets' \
+   'pattern' \
 #   'cursor' \
 #   'root'
 #
 # Set syntax highlighting styles.
-# zstyle ':prezto:module:syntax-highlighting' styles \
-#   'builtin' 'bg=blue' \
-#   'command' 'bg=blue' \
-#   'function' 'bg=blue'
+ zstyle ':prezto:module:syntax-highlighting' styles \
+   'builtin' 'fg=blue' \
+   'command' 'fg=blue' \
+   'function' 'fg=blue' \
+   'alias' 'fg=blue' \
+   'default' 'fg=cyan' \
+   'single-hyphen-option' 'fg=cyan' \
+   'double-hyphen-option' 'fg=cyan' \
+   'path' 'fg=cyan,underline' \
+   'path_prefix' 'fg=cyan,underline'
 
 #
 # Terminal
