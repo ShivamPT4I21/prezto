@@ -1,7 +1,7 @@
 ##################################################
 # vim: ft=zsh
 #
-# A simple theme that displays relevant, contextual information.
+# A sophisticated theme.
 #
 # Authors:
 #   Joseph Tannhuber <sepp.tannhuber@yahoo.com>
@@ -53,7 +53,7 @@ elif [[ "$pwd_format" == "truncated" ]]; then
 fi
 }
 
-function prompt_terencehill_indicator {
+function prompt_terencehill_vimode {
 if [[ "%${editor_info[vimode]}" == "%${_prompt_terencehill_colors[5]}" ]]; then
     print -n "%{${_prompt_terencehill_cursor[1]}${editor_info[vimode]}%}"
 elif [[ "%${editor_info[vimode]}" == "%${_prompt_terencehill_colors[8]}" ]]; then
@@ -179,7 +179,7 @@ zstyle ':prezto:module:git:info:keys' format \
     'rprompt' '%A%B%S%a%d%m%r%U%u'
 
 # Define prompts.
-PROMPT='$(prompt_terencehill_indicator)▶${git_info:+${(e)git_info[prompt]}}${_prompt_terencehill_symbols} '
+PROMPT='$(prompt_terencehill_vimode)▶${git_info:+${(e)git_info[prompt]}}${_prompt_terencehill_symbols} '
 RPROMPT='${git_info[rprompt]} ${runtime}${editor_info[vimode]}${_prompt_terencehill_user}%b${editor_info[vimode]}${_prompt_terencehill_pwd}◀'
 SPROMPT='zsh: correct ${_prompt_terencehill_colors[5]}%R%f to ${_prompt_terencehill_colors[10]}%r%f [nyae]? '
 }

@@ -1,7 +1,7 @@
 ##################################################
 # vim: ft=zsh
 #
-# A simple theme that displays relevant, contextual information.
+# A sophisticated theme
 #
 # Authors:
 #   Joseph Tannhuber <sepp.tannhuber@yahoo.com>
@@ -50,7 +50,7 @@ elif [[ "$pwd_format" == "truncated" ]]; then
 fi
 }
 
-function prompt_budspencer_indicator {
+function prompt_budspencer_vimode {
 if [[ "%$editor_info[vimode]" == "%${_prompt_budspencer_colors[5]}" ]]; then
     print -n "%{${_prompt_budspencer_cursor[1]}%K{$editor_info[vimode]}%} REPLACE "
 elif [[ "%$editor_info[vimode]" == "%${_prompt_budspencer_colors[8]}" ]]; then
@@ -61,16 +61,18 @@ fi
 }
 
 function prompt_budspencer_symbols {
+local symbols
 if [[ -w . ]]; then
-    _prompt_budspencer_symbols=""
+    symbols=""
 else
-    _prompt_budspencer_symbols=" %B%F{${_prompt_budspencer_colors[4]}}%f%b"
+    symbols=" %B%F{${_prompt_budspencer_colors[4]}}"
 fi
-_prompt_budspencer_symbols+="${VIM:+" %B%F{${_prompt_budspencer_colors[7]}}V%f%b"}"
-_prompt_budspencer_symbols+="${RANGER_LEVEL:+" %B%F{${_prompt_budspencer_colors[7]}}R%f%b"}"
-_prompt_budspencer_symbols+="%1(j. %F{${_prompt_budspencer_colors[9]}}⚙%f.)"
-_prompt_budspencer_symbols+="%(?:: %B%F{${_prompt_budspencer_colors[5]}}↵%b)"
-_prompt_budspencer_symbols+="%f%(!. %B%F{${_prompt_budspencer_colors[4]}}⚡%f%b.)"
+symbols+="${VIM:+" %B%F{${_prompt_budspencer_colors[7]}}V"}"
+symbols+="${RANGER_LEVEL:+" %B%F{${_prompt_budspencer_colors[7]}}R"}"
+symbols+="%1(j. %F{${_prompt_budspencer_colors[9]}}⚙.)"
+symbols+="%(?: %B%F{${_prompt_budspencer_colors[10]}}✔: %B%F{${_prompt_budspencer_colors[5]}}✘)"
+symbols+="%(!. %B%F{${_prompt_budspencer_colors[4]}}⚡.)"
+_prompt_budspencer_symbols="%K{${_prompt_budspencer_colors[1]}}$symbols%F{${_prompt_budspencer_colors[1]}} "
 }
 
 function prompt_budspencer_precmd {
@@ -103,7 +105,7 @@ else
             days=$(( $cmdtime/1440 ))"d"
         fi
     fi
-    runtime="%F{${_prompt_budspencer_colors[1]}}%K{${_prompt_budspencer_colors[1]}}%F{${_prompt_budspencer_colors[11]}} $days$hours$minutes "
+    runtime="%F{${_prompt_budspencer_colors[1]}}%K{${_prompt_budspencer_colors[1]}}%(?:%F{${_prompt_budspencer_colors[10]}}:%F{${_prompt_budspencer_colors[5]}}) $days$hours$minutes "
 fi
 
 # Removes the whitespace character at the end of the right prompt.
@@ -127,7 +129,7 @@ add-zsh-hook precmd prompt_budspencer_precmd
 add-zsh-hook preexec prompt_budspencer_preexec
 
 # Load color palette.
-_prompt_budspencer_colors=(241 254 136 166 160 125 61 33 37 64 0)
+_prompt_budspencer_colors=(236 254 136 166 160 125 61 33 37 64 0 238)
 
 # Cursor colors.
 unsupported_terminals=("fbterm" "st")
@@ -148,25 +150,25 @@ zstyle ':prezto:module:editor:info:keymap:alternate' format "${_prompt_budspence
 # Set git-info parameters.
 zstyle ':prezto:module:git:info' verbose 'yes'
 zstyle ':prezto:module:git:info:action' format ":%%B%F{${_prompt_budspencer_colors[2]}}%s%f%%b"
-zstyle ':prezto:module:git:info:added' format " %%B%F{${_prompt_budspencer_colors[10]}}✚%f%%b"
-zstyle ':prezto:module:git:info:ahead' format " %%B%F{${_prompt_budspencer_colors[7]}}↑%f%%b"
-zstyle ':prezto:module:git:info:behind' format " %%B%F{${_prompt_budspencer_colors[7]}}↓%f%%b"
-zstyle ':prezto:module:git:info:branch' format '%F{${editor_info[vimode]}}%K{${_prompt_budspencer_colors[1]}}%F{${_prompt_budspencer_colors[11]}}  %b %s%F{${_prompt_budspencer_colors[1]}}'
+zstyle ':prezto:module:git:info:added' format " %%B%F{${_prompt_budspencer_colors[10]}}✚"
+zstyle ':prezto:module:git:info:ahead' format " %%B%F{${_prompt_budspencer_colors[7]}}↑"
+zstyle ':prezto:module:git:info:behind' format " %%B%F{${_prompt_budspencer_colors[7]}}↓"
+zstyle ':prezto:module:git:info:branch' format '%F{${editor_info[vimode]}}%K{${_prompt_budspencer_colors[12]}}%F{${_prompt_budspencer_colors[11]}}  %b %s%F{${_prompt_budspencer_colors[12]}}'
 zstyle ':prezto:module:git:info:commit' format '%F{${editor_info[vimode]}}%K{${_prompt_budspencer_colors[10]}}%F{${_prompt_budspencer_colors[11]}}  %.7c %s%F{${_prompt_budspencer_colors[10]}}'
-zstyle ':prezto:module:git:info:deleted' format " %%B%F{${_prompt_budspencer_colors[5]}}✖%f%%b"
-zstyle ':prezto:module:git:info:modified' format " %%B%F{${_prompt_budspencer_colors[8]}}✱%f%%b"
+zstyle ':prezto:module:git:info:deleted' format " %%B%F{${_prompt_budspencer_colors[5]}}–"
+zstyle ':prezto:module:git:info:modified' format " %%B%F{${_prompt_budspencer_colors[8]}}✱"
 zstyle ':prezto:module:git:info:position' format '%F{${editor_info[vimode]}}%K{${_prompt_budspencer_colors[6]}}%F{${_prompt_budspencer_colors[11]}}  %p %s%F{${_prompt_budspencer_colors[6]}}'
-zstyle ':prezto:module:git:info:renamed' format " %%B%F{${_prompt_budspencer_colors[6]}}→%f%%b"
-zstyle ':prezto:module:git:info:stashed' format " %%B%F{${_prompt_budspencer_colors[9]}}✭%f%%b"
-zstyle ':prezto:module:git:info:unmerged' format " %%B%F{${_prompt_budspencer_colors[7]}}═%f%%b"
-zstyle ':prezto:module:git:info:untracked' format " %%B%F{${_prompt_budspencer_colors[2]}}●%f%%b"
+zstyle ':prezto:module:git:info:renamed' format " %%B%F{${_prompt_budspencer_colors[6]}}→"
+zstyle ':prezto:module:git:info:stashed' format " %%B%F{${_prompt_budspencer_colors[9]}}✭"
+zstyle ':prezto:module:git:info:unmerged' format " %%B%F{${_prompt_budspencer_colors[7]}}═"
+zstyle ':prezto:module:git:info:untracked' format " %%B%F{${_prompt_budspencer_colors[2]}}●"
 zstyle ':prezto:module:git:info:keys' format \
     'prompt' '$(coalesce "%b" "%p" "%c")' \
-    'rprompt' '%A%B%S%a%d%m%r%U%u'
+    'rprompt' "%K{${_prompt_budspencer_colors[12]}}%A%B%S%a%d%m%r%U%u "
 
 # Define prompts.
-PROMPT='%F{${_prompt_budspencer_colors[11]}}$(prompt_budspencer_indicator)%F{${editor_info[vimode]}}%k${git_info:+${(e)git_info[prompt]}}%k%f${_prompt_budspencer_symbols} '
-RPROMPT='${git_info[rprompt]} ${runtime}%F{${editor_info[vimode]}}%F{${_prompt_budspencer_colors[11]}}%K{${editor_info[vimode]}} ${_prompt_budspencer_user}%K{${editor_info[vimode]}}${_prompt_budspencer_pwd}'
+PROMPT='%F{${_prompt_budspencer_colors[11]}}$(prompt_budspencer_vimode)%F{${editor_info[vimode]}}%k${git_info:+${(e)git_info[prompt]}}${_prompt_budspencer_symbols}%k%f '
+RPROMPT='${runtime}%F{${_prompt_budspencer_colors[12]}}${(%)git_info[rprompt]:+}${git_info[rprompt]}%F{${editor_info[vimode]}}%b%F{${_prompt_budspencer_colors[11]}}%K{${editor_info[vimode]}} ${_prompt_budspencer_user}%K{${editor_info[vimode]}}${_prompt_budspencer_pwd}'
 SPROMPT='zsh: correct %F{${_prompt_budspencer_colors[5]}}%R%f to %F{${_prompt_budspencer_colors[10]}}%r%f [nyae]? '
 }
 
