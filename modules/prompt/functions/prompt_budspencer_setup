@@ -154,7 +154,7 @@ zstyle ':prezto:module:git:info:added' format " %%B%F{${_prompt_budspencer_color
 zstyle ':prezto:module:git:info:ahead' format " %%B%F{${_prompt_budspencer_colors[7]}}↑"
 zstyle ':prezto:module:git:info:behind' format " %%B%F{${_prompt_budspencer_colors[7]}}↓"
 zstyle ':prezto:module:git:info:branch' format '%F{${editor_info[vimode]}}%K{${_prompt_budspencer_colors[12]}}%F{${_prompt_budspencer_colors[11]}}  %b %s%F{${_prompt_budspencer_colors[12]}}'
-zstyle ':prezto:module:git:info:commit' format '%F{${editor_info[vimode]}}%K{${_prompt_budspencer_colors[10]}}%F{${_prompt_budspencer_colors[11]}}  %.7c %s%F{${_prompt_budspencer_colors[10]}}'
+zstyle ':prezto:module:git:info:commit' format '%F{${editor_info[vimode]}}%K{${_prompt_budspencer_colors[10]}}%F{${_prompt_budspencer_colors[11]}} ➦ %.7c %s%F{${_prompt_budspencer_colors[10]}}'
 zstyle ':prezto:module:git:info:deleted' format " %%B%F{${_prompt_budspencer_colors[5]}}–"
 zstyle ':prezto:module:git:info:modified' format " %%B%F{${_prompt_budspencer_colors[8]}}✱"
 zstyle ':prezto:module:git:info:position' format '%F{${editor_info[vimode]}}%K{${_prompt_budspencer_colors[6]}}%F{${_prompt_budspencer_colors[11]}}  %p %s%F{${_prompt_budspencer_colors[6]}}'
