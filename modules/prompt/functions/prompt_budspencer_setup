@@ -129,7 +129,7 @@ add-zsh-hook precmd prompt_budspencer_precmd
 add-zsh-hook preexec prompt_budspencer_preexec
 
 # Load color palette.
-_prompt_budspencer_colors=(236 254 136 166 160 125 61 33 37 64 0 238)
+_prompt_budspencer_colors=(236 254 136 166 160 125 61 33 37 64 0 239 130)
 
 # Cursor colors.
 unsupported_terminals=("fbterm" "st")
@@ -151,8 +151,8 @@ zstyle ':prezto:module:editor:info:keymap:alternate' format "${_prompt_budspence
 zstyle ':prezto:module:git:info' verbose 'yes'
 zstyle ':prezto:module:git:info:action' format ":%%B%F{${_prompt_budspencer_colors[2]}}%s%f%%b"
 zstyle ':prezto:module:git:info:added' format " %%B%F{${_prompt_budspencer_colors[10]}}✚"
-zstyle ':prezto:module:git:info:ahead' format " %%B%F{${_prompt_budspencer_colors[7]}}↑"
-zstyle ':prezto:module:git:info:behind' format " %%B%F{${_prompt_budspencer_colors[7]}}↓"
+zstyle ':prezto:module:git:info:ahead' format " %%B%F{${_prompt_budspencer_colors[13]}}↑"
+zstyle ':prezto:module:git:info:behind' format " %%B%F{${_prompt_budspencer_colors[13]}}↓"
 zstyle ':prezto:module:git:info:branch' format '%F{${editor_info[vimode]}}%K{${_prompt_budspencer_colors[12]}}%F{${_prompt_budspencer_colors[11]}}  %b %s%F{${_prompt_budspencer_colors[12]}}'
 zstyle ':prezto:module:git:info:commit' format '%F{${editor_info[vimode]}}%K{${_prompt_budspencer_colors[10]}}%F{${_prompt_budspencer_colors[11]}} ➦ %.7c %s%F{${_prompt_budspencer_colors[10]}}'
 zstyle ':prezto:module:git:info:deleted' format " %%B%F{${_prompt_budspencer_colors[5]}}–"
