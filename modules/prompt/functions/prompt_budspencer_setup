@@ -129,7 +129,7 @@ add-zsh-hook precmd prompt_budspencer_precmd
 add-zsh-hook preexec prompt_budspencer_preexec
 
 # Load color palette.
-_prompt_budspencer_colors=(236 254 136 166 160 125 61 33 37 64 0 239 130)
+_prompt_budspencer_colors=(236 254 136 166 160 125 61 33 37 64 16 239 130)
 
 # Cursor colors.
 unsupported_terminals=("fbterm" "st")
